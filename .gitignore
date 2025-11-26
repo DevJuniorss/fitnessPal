@@ -13,3 +13,28 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# ======== ADIÇÕES RECOMENDADAS ========
+
+# Arquivos de chave e credenciais
+*.keystore
+*.jks
+*.pem
+*.p12
+*.key
+
+# Google Services (Firebase)
+google-services.json
+GoogleService-Info.plist
+
+# Variáveis de ambiente
+.env
+*.env
+.env.*
+
+# Arquivos de log
+*.log
+
+# Arquivos de saída temporários
+/tmp
+
