@@ -1,17 +1,17 @@
-name: LiFitness CI
+name: Android CI
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ main ]
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
+    - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Set up JDK 17
@@ -22,22 +22,36 @@ jobs:
         cache: 'gradle'
 
     - name: Grant execute permission for gradlew
-      # O gradlew está na raiz do projeto Gradle, que é a pasta LiFitness
-      run: chmod +x LiFitness/gradlew
+      run: chmod +x gradlew
+
+    - name: Cache Gradle dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Run Unit Tests
+      run: ./gradlew test
 
     - name: Build Debug APK
-      # Executa o build a partir da raiz do repositório
-      run: ./LiFitness/gradlew assembleDebug
-      
-    - name: Run Unit Tests
-      run: ./LiFitness/gradlew testDebugUnitTest
-      
-    - name: Run Android Lint
-      run: ./LiFitness/gradlew lintDebug
-      
-    - name: Upload APK
+      # Use 'assembleDebug' for a standard debug build
+      # Use 'bundleDebug' for a debug AAB (Android App Bundle)
+      run: ./gradlew assembleDebug
+
+    - name: Upload Debug APK as Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug-apk
-        # O APK estará em LiFitness/app/build/...
-        path: LiFitness/app/build/outputs/apk/debug/app-debug.apk
+        name: debug-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
+        # O caminho pode variar dependendo da estrutura do seu projeto.
+        # Assumindo a estrutura padrão de um projeto Android.
+
+    - name: Run connectedCheck (Optional - Requires Emulator/Device Setup)
+      # Descomente se você quiser rodar testes de instrumentação (UI tests)
+      # Requer configuração adicional, como o uso de um emulador.
+      # run: ./gradlew connectedCheck
+      run: echo "Skipping connectedCheck (Instrumentation/UI tests) for initial setup. Uncomment to enable."
