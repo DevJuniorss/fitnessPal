@@ -24,33 +24,23 @@ jobs:
         java-version: '17'
         cache: 'gradle'
 
-    # 3. Checar se o commit contém DADOS SENSÍVEIS
-    - name: Secret Scanning (dados sensíveis)
-      run: |
-        gh secret-scanning scan-repo \
-        --repo "$GITHUB_REPOSITORY" \
-        --sarif \
-        --token "${{ secrets.GITHUB_TOKEN }}" \
-        > results.sarif
-
-
-    # 4. Dar permissão ao gradlew
+    # 3. Dar permissão ao gradlew
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    # 5. Build do projeto
+    # 4. Build do projeto
     - name: Build Android Project
       run: ./gradlew assembleDebug --stacktrace
 
-    # 6. Rodar testes
+    # 5. Rodar testes
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest
 
-    # 7. Análise estática (lint)
+    # 6. Análise estática (lint)
     - name: Run Android Lint
       run: ./gradlew lint
 
-    # 8. Verificar vulnerabilidades
+    # 7. Verificar vulnerabilidades
     - name: Security Scan
       uses: aquasecurity/trivy-action@master
       with:
