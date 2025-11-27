@@ -79,7 +79,7 @@ Ao finalizar o desenvolvimento, abrir um **pull request** para a branch principa
 | Nome | Função | LinkedIn |
 |------|---------|-----------|
 | **Alexandre Júnior** | Engenheiro de Software | [DevJuniorSS](https://www.linkedin.com/in/devjuniorss/) |
-| **Eduardo Nunes** | Engenheiro de Software | [LinkedIn](https://www.linkedin.com/in/placeholder4) |
+| **Eduardo Nunes** | Engenheiro de Software | [LinkedIn](https://github.com/eduardonunes2819313-blip/Mobile-PIES3/settings/access?guidance_task=) |
 
 ---
 
